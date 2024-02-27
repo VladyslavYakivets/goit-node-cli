@@ -10,8 +10,7 @@ export async function listContacts() {
 }
 
 export async function getContactById(contactId) {
-  const listString = await fs.readFile(contactsPath, "utf-8");
-  const list = JSON.parse(listString);
+  const list = await listContacts();
   const index = list.findIndex((c) => c.id === contactId);
   if (index === -1) {
     return null;
@@ -21,8 +20,7 @@ export async function getContactById(contactId) {
 }
 
 export async function removeContact(contactId) {
-  const listString = await fs.readFile(contactsPath, "utf-8");
-  const list = JSON.parse(listString);
+  const list = await listContacts();
   const index = list.findIndex((c) => c.id === contactId);
   if (index === -1) {
     return null;
@@ -39,8 +37,7 @@ export async function addContact(name, email, phone) {
     email,
     phone,
   };
-  const listString = await fs.readFile(contactsPath, "utf-8");
-  const list = JSON.parse(listString);
+  const list = await listContacts();
   list.push(newContact);
   await fs.writeFile(contactsPath, JSON.stringify(list, null, 4));
   return newContact;
